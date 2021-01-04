@@ -50,9 +50,9 @@ class ProductController extends Controller
         }
         error_log($cari);
         $banners = Banner::orderByDesc('created_at')->take(5)->get();
-        $hlTags = Highlight::distinct()->select('tag')->get();
+        $category = Product::where('highlight', '=', 1)->distinct()->select('category')->get();
         $highlights = Highlight::get();
         $products = Product::latest()->paginate(4);
-        return view('index', compact('products', 'banners', 'highlights', 'hlTags', 'cari'));
+        return view('index', compact('products', 'banners', 'highlights', 'category', 'cari'));
     }
 }

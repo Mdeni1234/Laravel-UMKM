@@ -43,13 +43,13 @@
       </svg>    
           </span>
         </div>
-        @foreach($banners as $banner)
+        @foreach($products as $product)
         <div class="carousel-item carousel-item--{{$loop->first}}">
-          <div class="carousel-item__image" style="background-image: url({{ asset('/img/'.$banner->banner)}});"></div>
+          <div class="carousel-item__image" style="background-image: url({{ asset('/storage/'.$product->banner_img)}});"></div>
           <div class="carousel-item__info">
             <div class="carousel-item__container text-center">
-            <h1 class="carousel-item__title">{{$banner->product->title}}</h1>
-            <h1 class="carousel-item__subtitle">{{$banner->product->umkm}} </h1>
+            <h1 class="carousel-item__title">{{$product->title}}</h1>
+            <h1 class="carousel-item__subtitle">{{$product->umkm}} </h1>
             <a href="#list-product" class="carousel-item__btn">Explore the tour</a>
               </div>
           </div>
@@ -117,10 +117,12 @@
     <div class="row">
       <div class="col-md-6 col-lg-6">
         <ul class="nav nav-tabs justify-content-center">
-        @foreach ($hlTags as $tag)
+        @foreach ($category as $tag)
+        @if($tag)
           <li class="nav-item ">
-            <a class="nav-link {{ $loop->first ?  'active' : '' }}" href="#{{$tag->tag}}">{{$tag->tag}}</a>
+            <a class="nav-link {{ $loop->first ?  'active' : '' }}" href="#{{$tag->category}}">{{$tag->category}}</a>
           </li>
+          @endif
           @endforeach
         </ul>
       </div>
@@ -130,19 +132,19 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="tab-content mb-3">
-        @foreach ($hlTags as $tag)
-              <div id="{{$tag->tag}}" class="container tab-pane {{ $loop->first ?  'active' : '' }}"><br>
+        @foreach ($category as $tag)
+              <div id="{{$tag->category}}" class="container tab-pane {{ $loop->first ?  'active' : '' }}"><br>
                 <div class="detail-product-carousel">
-                @foreach ($highlights as $hl )
-                @if ($tag->tag == $hl->tag)
+                @foreach ($products as $hl )
+                @if ($tag->category == $hl->category)
                   <div class="detail-item">
                     <div class="detail-content">
-                      <div class="carousel-item__image" style="background-image: url({{asset('/img/'.$hl->product->image)}}); background-size: cover;"></div>
+                      <div class="carousel-item__image" style="background-image: url({{asset('/storage/'.$hl->profile_img)}}); background-size: cover;"></div>
                       <div class="carousel-item__info">
                         <div class="carousel-item__container text-center">
-                        <h1 class="carousel-item__subtitle">{{$hl->product->umkm}} </h1>
-                        <h1 class="carousel-item__title">{{$hl->product->title}}</h1>
-                        <p class="carousel-item__description">{{$hl->product->description}}</p>
+                        <h1 class="carousel-item__subtitle">{{$hl->umkm}} </h1>
+                        <h1 class="carousel-item__title">{{$hl->title}}</h1>
+                        <p class="carousel-item__description">{{$hl->description}}</p>
                         <a href="#" class="carousel-item__btn">Explore the tour</a>
                           </div>
                     </div>
@@ -154,11 +156,11 @@
              <!-- NAV DETAIL PRODUCT -->
 
               <div class="detail-nav">
-              @foreach ($highlights as $hl )
-                @if ($tag->tag == $hl->tag)
+              @foreach ($products as $hl )
+                @if ($tag->category == $hl->category)
                 <div class="detail-nav-item">
-                  <div class="nav-image text-center" style="background: url({{asset('/img/'.$hl->product->image)}}) no-repeat; background-position: center;">
-                  <p> {{$hl->product->title}}</p>
+                  <div class="nav-image text-center" style="background: url({{asset('/storage/'.$hl->profile_img)}}) no-repeat; background-position: center;">
+                  <p> {{$hl->title}}</p>
                   </div>
                 </div>
                 @endif
@@ -186,7 +188,7 @@
             @foreach($cari as $product)
             <div class="col-lg-3 col-md-6 col-sm-12 col-xs-6 text-center">
               <div class="list-product">
-                <img src="{{ asset('/img/'.$product->image)}}" alt="" class="img-fluid">
+                <img src="{{ asset('/storage/'.$product->profile_img)}}" alt="" class="img-fluid">
                 <h3 class="mt-2">{{$product->title}}</h3>
                 <p class="mt-3">{{$product->description}}</p>
               </div>
@@ -196,7 +198,7 @@
             @foreach($products as $product)
             <div class="col-lg-3 col-md-6 col-sm-12 col-xs-6 text-center">
               <div class="list-product">
-                <img src="{{ asset('/img/'.$product->image)}}" alt="" class="img-fluid">
+                <img src="{{ asset('/storage/'.$product->profile_img)}}" alt="" class="img-fluid">
                 <h3 class="mt-2">{{$product->title}}</h3>
                 <p class="mt-3">{{$product->description}}</p>
               </div>

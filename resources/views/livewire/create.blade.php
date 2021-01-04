@@ -26,28 +26,18 @@
                             @error('category') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-1"> <span>Product</span>
-                            @if ($image)
-                                <div style="background-image: url('{{$image->temporaryUrl()}}')" class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center bg-cover bg-center">
-                                @else
-                                <div class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center">
-                                @endif                                
-                                <div class="absolute">
-                                    <div class="flex flex-col items-center"> <i class="fa fa-folder-open fa-3x text-blue-700"></i> <span class="block text-gray-400 font-normal">Attach you files here</span> </div>
-                                </div> <input type="file" class="h-full w-full opacity-0" wire:model="image">
-                            </div>
-                            @error('image') <span class="text-red-500">{{ $message }}</span> @enderror
-                        </div>
-                        <div class="mb-1"> <span>Banner</span>
-                        @if ($banner)
-                            <div style="background-image: url('{{$banner->temporaryUrl()}}')" class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center bg-cover bg-center">
+                            @if($image)
+                            <div style="background-image: url('{{$image->temporaryUrl()}}')" class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center bg-cover bg-center">
+                            @elseif ($old_profile)
+                            <div style="background-image: url({{asset('storage/'.$old_profile)}})" class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center bg-cover bg-center">
                             @else
                             <div class="relative border-dotted h-32 rounded-lg border-dashed border-2 border-blue-700 bg-gray-100 flex justify-center items-center">
-                            @endif
+                            @endif                                
                                 <div class="absolute">
-                                <div class="flex flex-col items-center"> <i class="fa fa-folder-open fa-3x text-blue-700"></i> <span class="block text-gray-400 font-normal">Attach you files here</span> </div>
-                                </div> <input type="file" class="h-full w-full opacity-0" wire:model="banner">
+                                    <div class="flex flex-col items-center"> <i class="fa fa-folder-open fa-3x text-blue-700"></i> <span class="block text-gray-400 font-normal">Attach you files here</span> </div>
+                                </div> <input type="file" name="image" class="h-full w-full opacity-0" wire:model="image">
                             </div>
-                            @error('banner') <span class="text-red-500">{{ $message }}</span> @enderror
+                            @error('image') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </div>

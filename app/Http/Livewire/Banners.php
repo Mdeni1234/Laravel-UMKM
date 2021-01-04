@@ -2,104 +2,82 @@
 
 namespace App\Http\Livewire;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
 use Livewire\Component;
 
 class Banners extends Component
 {
     use WithFileUploads;
-    public $products, $product_id, $banner;
+    use WithPagination;
+    public  $product_id, $title, $desc, $category, $image, $banner, $edit, $profile, $old_profile, $old_banner, $isBanner, $banner_status;
     public $isModal = 0;
     public function render()
     {
-        $this->products = Product::orderBy('created_at', 'DESC')->get();
-        return view('livewire.banners');
+        return view('livewire.banners', [
+            'products' => Product::where('banner_img', '!=', null)->latest()->paginate(5),
+        ]);
     }
     public function create()
     {
-        $this->resetInputFields();
-        $this->openModal();
+        return redirect()->route('product');
     }
-  
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    public function openModal()
+
+    public function closeBanner()
     {
-        $this->isModal = true;
+        $this->isBanner = false;
     }
-  
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    public function closeModal()
+    public function delete($id)
     {
-        $this->isModal = false;
-    }
-  
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    private function resetInputFields(){
-        $this->product_id = '';
-        $this->banner = '';
-    }
-     
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    public function store()
-    {
-        $this->validate([
-            'product_id' => 'required',
-            'banner' => 'required',
+        $product = Product::findOrFail($id);
+        Storage::delete($product->banner_img);
+        Product::updateOrCreate(['id' => $id],
+        [
+            'banner_img' => null,
+            'banner_status' => 0,
 
         ]);
-   
-        Product::updateOrCreate(
+        session()->flash('message', 'Banner Deleted Successfully.');
+    }
+
+    public function createBanner($id) {
+        $this->resetInputFields();
+        $this->product_id = $id;
+        $this->isBanner = true;
+    }
+
+    public function storeBanner()
+    {
+        $this->validate([
+            'banner' => 'required',
+        ]);
+        Product::updateOrCreate(['id' => $this->product_id],
         [
-            'product_id' => $this->id,
-            'banner' => $this->image->store('banners', 'public')
+            'banner_img' => $this->banner->store('image', 'public'),
         ]);
         
         session()->flash('message', 
-            $this->product_id ? 'Post Updated Successfully.' : 'Post Created Successfully.');
+            $this->product_id ? 'Banner Updated Successfully.' : 'Banner Created Successfully.');
   
         $this->closeModal();
+        $this->isBanner = false;
         $this->resetInputFields();
     }
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    public function edit($id)
-    {
-        $product = Product::findOrFail($id);
-        $this->title = $product->title;
-        $this->desc = $product->desc;
-        $this->image = $product->image;
 
-    
-        $this->openModal();
-    }
-     
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    public function delete($id)
-    {
-        Product::find($id)->delete();
-        session()->flash('message', 'Post Deleted Successfully.');
+    public function Banner($id, $status) {
+        if($status) {
+            $this->banner_status = 0;
+            error_log($status);
+        } else {
+            error_log("oke");
+            $this->banner_status = 1;
+        }
+        error_log($status);
+        Product::updateOrCreate(['id' => $id],
+        [
+            'banner' => $this->banner_status,
+        ]);
+        session()->flash('message', 'Status Updated');
     }
 }

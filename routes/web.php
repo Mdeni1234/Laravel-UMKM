@@ -26,5 +26,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         return view('dashboard');
     })->name('dashboard');
     Route::get('product', Dashboard::class)->name('product');
-    Route::get('banners', Banners::class)->name('banners');
+    Route::get('banner', Banners::class)->name('banner');
 });

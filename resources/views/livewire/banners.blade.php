@@ -1,7 +1,7 @@
 
 <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Data Product
+        Data Header Banners
     </h2>
 </x-slot>
 <div class="py-12">
@@ -18,26 +18,35 @@
             @endif
 
             <button wire:click="create()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3">Tambah Banner</button>
-            @if($isModal)
-                @include('livewire.create_banner')
+            @if($isBanner)
+                @include('livewire.createBanner')
             @endif
 
             <table class="table-fixed w-full">
                 <thead>
                     <tr class="bg-gray-100">
+                        <th class="px-4 py-2">UMKM</th>
                         <th class="px-4 py-2">Product</th>
                         <th class="px-4 py-2">Banner</th>
+                        <th class="px-4 py-2">Status</th>
                         <th class="px-4 py-2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($products as $row)
+                    @forelse( $products as $row)
                         <tr>
+                            <td class="border px-4 py-2">{{ $row->umkm }}</td>
                             <td class="border px-4 py-2">{{ $row->title }}</td>
-                            <td class="border px-4 py-2">{{ $row->description }}</td>
-                            <td class="border px-4 py-2"><img src="{{asset('storage/'.$row->image)}}"></td>
+                            <td class="border px-4 py-2"><img src="{{asset('storage/'.$row->banner_img)}}"></td>
                             <td class="border px-4 py-2">
-                                <button wire:click="edit({{ $row->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
+                                @if ($row->banner)
+                                <button wire:click="Banner({{ $row->id }},{{$row->banner}})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Active</button>
+                                @else
+                                <button wire:click="Banner({{ $row->id }},{{$row->banner}})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"> Non Active</button>
+                                @endif    
+                            </td>
+                            <td class="border px-4 py-2">
+                                <button wire:click="createBanner({{ $row->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
                                 <button wire:click="delete({{ $row->id }})" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Hapus</button>
                             </td>
                         </tr>
@@ -51,3 +60,4 @@
         </div>
     </div>
 </div>
+{{ $products->links() }}

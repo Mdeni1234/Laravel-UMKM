@@ -10,6 +10,6 @@ class Highlight extends Model
     use HasFactory;
     protected $table = "highlight";
     public function product() {
-        return $this->belongsTo(Product::class, 'id_product');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }
