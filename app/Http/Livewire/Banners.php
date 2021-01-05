@@ -11,7 +11,7 @@ class Banners extends Component
 {
     use WithFileUploads;
     use WithPagination;
-    public  $product_id, $title, $desc, $category, $image, $banner, $edit, $profile, $old_profile, $old_banner, $isBanner, $banner_status;
+    public  $product_id, $banner, $banner_img, $isBanner, $old_banner;
     public $isModal = 0;
     public function render()
     {
@@ -27,6 +27,10 @@ class Banners extends Component
     public function closeBanner()
     {
         $this->isBanner = false;
+    }
+    public function resetInputFields() {
+        $this->banner = 0;
+        $this->banner_img = null;
     }
     public function delete($id)
     {
@@ -66,18 +70,24 @@ class Banners extends Component
     }
 
     public function Banner($id, $status) {
-        if($status) {
-            $this->banner_status = 0;
-            error_log($status);
+        $count = Product::where('highlight', '=', 1)->count();
+        if($count <= 1) {
+            if($status) {
+                $this->banner_status = 0;
+                error_log($status);
+            } else {
+                error_log("oke");
+                $this->banner_status = 1;
+            }
+            Product::updateOrCreate(['id' => $id],
+            [
+                'banner' => $this->banner_status,
+            ]);
+            session()->flash('message', 'Status Updated');
         } else {
-            error_log("oke");
-            $this->banner_status = 1;
+            session()->flash('error', 'Max 5');
         }
-        error_log($status);
-        Product::updateOrCreate(['id' => $id],
-        [
-            'banner' => $this->banner_status,
-        ]);
-        session()->flash('message', 'Status Updated');
+        
+        
     }
 }

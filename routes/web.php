@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\Banners;
 
@@ -22,9 +23,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
     Route::get('product', Dashboard::class)->name('product');
     Route::get('banner', Banners::class)->name('banner');
 });

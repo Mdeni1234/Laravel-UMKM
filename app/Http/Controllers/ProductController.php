@@ -44,15 +44,15 @@ class ProductController extends Controller
                 $query->where('title', 'like', '%'.$search.'%')
                     ->orWhere('umkm', 'like', '%'.$search.'%');
             })->paginate(4);
-            $cari->appends(['search' => $search]);
+            $cari->appends(['search' => $search]); 
         } else {
             $cari = null;
         }
         error_log($cari);
-        $banners = Banner::orderByDesc('created_at')->take(5)->get();
+        $listCategory =  array("Makanan","Minuman","Kreasi");
         $category = Product::where('highlight', '=', 1)->distinct()->select('category')->get();
         $highlights = Highlight::get();
         $products = Product::latest()->paginate(4);
-        return view('index', compact('products', 'banners', 'highlights', 'category', 'cari'));
+        return view('index', compact('products', 'listCategory', 'highlights', 'category', 'cari'));
     }
 }

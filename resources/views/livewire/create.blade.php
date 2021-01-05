@@ -10,19 +10,29 @@
             <form enctype="multipart/form-data">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="">
+                    <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">UMKM:</label>
+                            <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  wire:model="umkm">
+                            @error('umkm') <span class="text-red-500">{{ $message }}</span>@enderror
+                        </div>
                         <div class="mb-4">
-                            <label for="formName" class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
-                            <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formName" wire:model="title">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+                            <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  wire:model="title">
                             @error('title') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-4">
-                            <label for="formEmail" class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
-                            <input type="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formEmail" wire:model="desc">
+                            <label  class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+                            <input type="email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" wire:model="desc">
                             @error('desc') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-4">
-                            <label for="formPhone" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
-                            <input type="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="formCategory" wire:model="category">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="category">Category:</label>
+                            <select class="shadow bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" wire:model.lazy="category" id="category" require>
+                                <option selected hidden>Click to show the menus</option>
+                                <option value="0">Makanan</option>
+                                <option value="1">Minuman</option>
+                                <option value="2">Kreasi</option>
+                            </select>
                             @error('category') <span class="text-red-500">{{ $message }}</span>@enderror
                         </div>
                         <div class="mb-1"> <span>Product</span>

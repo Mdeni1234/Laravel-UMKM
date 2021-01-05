@@ -44,6 +44,7 @@
           </span>
         </div>
         @foreach($products as $product)
+        @if($product->banner)
         <div class="carousel-item carousel-item--{{$loop->first}}">
           <div class="carousel-item__image" style="background-image: url({{ asset('/storage/'.$product->banner_img)}});"></div>
           <div class="carousel-item__info">
@@ -54,6 +55,7 @@
               </div>
           </div>
         </div>
+        @endif
         @endforeach
       </div>
 </header>
@@ -120,7 +122,7 @@
         @foreach ($category as $tag)
         @if($tag)
           <li class="nav-item ">
-            <a class="nav-link {{ $loop->first ?  'active' : '' }}" href="#{{$tag->category}}">{{$tag->category}}</a>
+            <a class="nav-link {{ $loop->first ?  'active' : '' }}" href="#{{$tag->category}}">{{$listCategory[$tag->category]}}</a>
           </li>
           @endif
           @endforeach
@@ -136,6 +138,7 @@
               <div id="{{$tag->category}}" class="container tab-pane {{ $loop->first ?  'active' : '' }}"><br>
                 <div class="detail-product-carousel">
                 @foreach ($products as $hl )
+                @if($hl->highlight)
                 @if ($tag->category == $hl->category)
                   <div class="detail-item">
                     <div class="detail-content">
@@ -151,18 +154,21 @@
                   </div>
                   </div>
                   @endif
+                  @endif
             @endforeach
             </div>
              <!-- NAV DETAIL PRODUCT -->
 
               <div class="detail-nav">
               @foreach ($products as $hl )
+              @if($hl->highlight)
                 @if ($tag->category == $hl->category)
                 <div class="detail-nav-item">
                   <div class="nav-image text-center" style="background: url({{asset('/storage/'.$hl->profile_img)}}) no-repeat; background-position: center;">
                   <p> {{$hl->title}}</p>
                   </div>
                 </div>
+                @endif
                 @endif
             @endforeach
              </div>

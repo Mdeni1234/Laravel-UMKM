@@ -7,18 +7,22 @@ use App\Models\Product;
 use App\Models\Banner;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 
 
 
 class Dashboard extends Component
 {
     use WithFileUploads;
-    public $products, $product_id, $title, $desc, $category, $image, $banner, $edit, $profile, $old_profile, $old_banner, $isBanner, $highlight;
+    use WithPagination;
+    public  $product_id, $umkm, $title, $desc, $category, $image, $banner, $edit, $profile, $old_profile, $old_banner, $isBanner, $highlight, $listCategory;
     public $isModal = 0;
     public function render()
     {
-        $this->products = Product::orderBy('created_at', 'DESC')->get();
-        return view('livewire.dashboard');
+        $this->listCategory = array("Makanan","Minuman","Kreasi");
+        return view('livewire.dashboard', [
+            'products' => Product::latest()->paginate(5),
+        ]);
     }
     public function create()
     {
@@ -57,9 +61,10 @@ class Dashboard extends Component
      * @var array
      */
     private function resetInputFields(){
+        $this->umkm = '';
         $this->title = '';
         $this->desc = '';
-        $this->image = '';
+        $this->image = null;
     }
      
     /**
@@ -70,6 +75,7 @@ class Dashboard extends Component
     public function store()
     {
         $this->validate([
+            'umkm' => 'required',
             'title' => 'required',
             'desc' => 'required',
             'category' => 'required',
@@ -87,6 +93,7 @@ class Dashboard extends Component
             }
         Product::updateOrCreate(['id' => $this->product_id],
         [
+            'umkm' => $this->umkm,
             'title' => $this->title,
             'description' => $this->desc,
             'category' => $this->category,
@@ -111,6 +118,7 @@ class Dashboard extends Component
     {
         $edit = true;
         $product = Product::findOrFail($id);
+        $this->umkm = $product->umkm;
         $this->product_id = $product->id;
         $this->title = $product->title;
         $this->desc = $product->description;
